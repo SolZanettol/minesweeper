@@ -105,7 +105,7 @@ class Planche(Canvas):
         self.delete('victoire')
         if len(self.drapeaux) == self.bombes and len(self.jeu.cases_devoilees) == self.largeur*self.hauteur-self.bombes:
             self.create_image(8 * self.largeur - 1, 17, image=self.img_emoji['cool'], tags='victoire', anchor='nw')
-            self.partie_finie = False
+            self.partie_finie = True
 
 
     def construire_cadre(self, largeur, hauteur):
