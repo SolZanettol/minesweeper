@@ -76,6 +76,9 @@ class Planche(Canvas):
                 for case in cases_a_devoiler:
                     if case not in self.drapeaux:
                         self.create_image(16 * (case % self.largeur) + self.margeW, 16 * (case // self.largeur) + self.margeN, image=self.img_cases[str(self.jeu.grille[case])], tags='devoilees', anchor='nw')
+                    elif case in self.jeu.cases_devoilees:
+                        self.jeu.cases_devoilees.remove(case)
+                self.check_victoire()
         elif self.dans_emoji(event):
             self.renitialiser()
 
@@ -91,7 +94,7 @@ class Planche(Canvas):
 
     def drapeau(self, event):
         x, y = (event.x - self.margeW) // 16, (event.y - self.margeN) // 16
-        if (self.largeur * y + x) in self.drapeaux:
+        if (self.largeur * y + x) in self.drapeaux and not self.partie_finie:
             self.delete('drapeau'+str(x) + '_' + str(y))
             self.drapeaux.remove(self.largeur * y + x)
             self.compteur_bombes.incre()
