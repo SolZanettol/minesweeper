@@ -41,7 +41,6 @@ class Planche(Canvas):
         self.partie_finie = False
         self.renitialiser()
 
-
     def glisser(self, event):
         self.delete('glisse')
         self.delete('wow')
