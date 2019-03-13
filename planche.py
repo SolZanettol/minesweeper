@@ -10,6 +10,7 @@ class Planche(Canvas):
         self.largeur, self.hauteur, self.bombes= largeur, hauteur, bombes
         self.img_cases = {'brique':PhotoImage(file='res/brique.gif', master=parent),
                           '-1': PhotoImage(file='res/-1.gif', master=parent),
+                          '-1r': PhotoImage(file='res/-1r.gif', master=parent),
                           '0': PhotoImage(file='res/case.gif', master=parent),
                           'drapeau': PhotoImage(file='res/drapeau.gif', master=parent)}
         for i in range(1, 9):
@@ -45,7 +46,7 @@ class Planche(Canvas):
         self.delete('glisse')
         self.delete('wow')
         self.delete('appuye')
-        if not self.partie_finie:
+        if not self.partie_finie and not self.dans_emoji(event):
             self.create_image(8 * self.largeur - 1, 17, image=self.img_emoji['wow'], tags='wow', anchor='nw')
             if self.dans_grille(event):
                 x, y = (event.x - self.margeW) // 16, (event.y - self.margeN) // 16
@@ -68,6 +69,7 @@ class Planche(Canvas):
             if (self.largeur * y + x) not in self.jeu.cases_devoilees and (self.largeur * y + x) not in self.drapeaux:
                 self.create_image(16 * x + self.margeW, 16 * y + self.margeN, image=self.img_cases[str(self.jeu.grille[self.largeur * y + x])], tags='devoilees', anchor='nw')
                 if self.jeu.grille[self.largeur * y + x] == -1:
+                    self.create_image(16 * x + self.margeW, 16 * y + self.margeN, image=self.img_cases['-1r'], tags='devoilees', anchor='nw')
                     self.create_image(8 * self.largeur - 1, 17, image=self.img_emoji['mort'], anchor='nw')
                     self.partie_finie = True
                 cases_a_devoiler = self.jeu.devoiler(self.largeur * y + x)
