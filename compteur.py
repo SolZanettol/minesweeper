@@ -18,6 +18,8 @@ class Compteur:
         self.placer(self.valeur)
 
     def placer(self, valeur):
+        if valeur <0:
+            valeur = 0
         self.planche.delete('compteur' + str(self.timer))
         self.planche.create_image(self.coordx, self.coordy, image=self.img_compteur[str(valeur//100)],
                           tags='compteur' + str(self.timer), anchor='nw')

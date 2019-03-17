@@ -1,9 +1,10 @@
 from tkinter import Canvas, Tk, PhotoImage
 from jeu import *
 from compteur import *
+from interface import *
 
 class Planche(Canvas):
-    def __init__(self, parent, largeur, hauteur, bombes):
+    def __init__(self, parent, largeur, hauteur, bombes, importe=False, grille=''):
         self.parent = parent
         self.margeH, self.margeV, self.margeN, self.margeS, self.margeE, self.margeW = 20, 65, 57, 8, 8, 12
         super().__init__(parent, width=largeur * 16 + self.margeH, height=hauteur * 16 + self.margeV)
@@ -33,8 +34,11 @@ class Planche(Canvas):
         self.bind('<Button-3>', self.drapeau)
         self.bind('<B1-Motion>', self.glisser)
         self.bind('<ButtonRelease-1>', self.clic)
-        self.premier_clic_effectue = False
-        self.jeu = Jeu(self.largeur, self.hauteur, self.bombes)
+        self.jeu = Jeu(self.largeur, self.hauteur, self.bombes, (0,0), importe, grille)
+        if importe:
+            self.premier_clic_effectue = True
+        else:
+            self.premier_clic_effectue = False
         self.drapeaux = []
         self.compteur_bombes = Compteur(self, False, self.parent)
         self.timer = Compteur(self, True, self.parent)

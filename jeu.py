@@ -1,11 +1,14 @@
 import random
 
 class Jeu:
-    def __init__(self, largeur, hauteur, bombes, premier_clic=(0,0)):
+    def __init__(self, largeur, hauteur, bombes, premier_clic=(0, 0), importe=False, grille_importee=''):
         self.largeur = largeur
         self.hauteur = hauteur
         self.nbombes = bombes
-        self.grille = self.generer_grille(premier_clic)
+        if importe:
+            self.grille = self.generer_grille_importee(grille_importee)
+        else:
+            self.grille = self.generer_grille(premier_clic)
         self.cases_devoilees = []
 
     def generer_grille(self, premier_clic):
@@ -21,6 +24,28 @@ class Jeu:
             nouvelle_bombe = random.choice(grille_sans_bombe)
             grille_sans_bombe.remove(nouvelle_bombe)
             grille[nouvelle_bombe] = -1
+
+        for case in range(self.largeur*self.hauteur):
+            if grille[case] == -1:
+                continue
+            for i in (-1, 0, 1):
+                if ((case + i) // self.largeur) != (case // self.largeur):
+                    continue
+                for j in (-self.largeur, 0, self.largeur):
+                    if ((case + j) // self.largeur) // self.hauteur != 0 or (i, j) == (0, 0):
+                        continue
+                    if grille[case + i + j] == -1:
+                        grille[case] += 1
+
+        return grille
+
+    def generer_grille_importee(self, grille_importee):
+        grille=[]
+        for i in grille_importee[4: ]:
+            if i == '*':
+                grille += [-1]
+            else:
+                grille += [0]
 
         for case in range(self.largeur*self.hauteur):
             if grille[case] == -1:
